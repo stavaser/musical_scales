@@ -2,3 +2,9 @@ body {
   background-color: rgb(167, 111, 241);
   /* color: rgb(19, 60, 66); */
 }
+
+h1 {
+  color: white;
+  text-align: center;
+  font-size: 50px;
+}

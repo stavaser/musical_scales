@@ -2,7 +2,7 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let analyser = audioCtx.createAnalyser();
 analyser.fftSize = 2048;
 
-const AudioContext = {
+const AC = {
   getAudioContext() {
     return audioCtx;
   },
@@ -22,4 +22,4 @@ const AudioContext = {
   },
 };
 
-export default AudioContext;
+export default AC;

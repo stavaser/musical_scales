@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const StyledPiano = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 30vh;
   height: 100%;
 
   .keyandnote {
