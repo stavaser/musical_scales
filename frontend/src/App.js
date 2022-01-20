@@ -96,25 +96,26 @@ const App = () => {
       },
     });
   };
-
+  setInterval(updatePitch, 1);
+  console.log(pitchNote);
   var myAudioContext;
 
   const playNote = (note) => {
     if (!myAudioContext) {
       myAudioContext = new AudioContext();
     } else {
-      console.log(note);
+      // console.log(note);
       Soundfont.instrument(myAudioContext, 'acoustic_grand_piano').then(function (piano) {
         piano.play(note);
       });
     }
   };
-  console.log(GenerateScale('F#', 'major'));
+  // console.log(GenerateScale('D#', 'major'));
   return (
     <div>
       <button onClick={start}>start</button>
       <button onClick={stop}>stop</button>
-      <h1>Select a scale</h1>
+      <h1>{pitchNote}</h1>
       <Select />
       <Piano input={note} />
     </div>
