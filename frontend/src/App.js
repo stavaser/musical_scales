@@ -8,6 +8,7 @@ import autoCorrelate from './utils/AutoCorrelate';
 import { noteFromPitch, centsOffFromPitch, getDetunePercent } from './utils/Helpers';
 import GenerateScale from './utils/GenerateScale';
 import Select from './components/Select/Select';
+import { useSelector } from 'react-redux';
 const noteStrings = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 const audioCtx = AC.getAudioContext();
@@ -16,6 +17,8 @@ const buflen = 2048;
 var buf = new Float32Array(buflen);
 
 const App = () => {
+  const state = useSelector((state) => state);
+
   const [source, setSource] = useState(null);
   const [started, setStart] = useState(false);
   const [pitchNote, setPitchNote] = useState('C');
@@ -97,25 +100,26 @@ const App = () => {
     });
   };
   setInterval(updatePitch, 1);
-  console.log(pitchNote);
+  // console.log(pitchNote);
   var myAudioContext;
 
   const playNote = (note) => {
     if (!myAudioContext) {
       myAudioContext = new AudioContext();
     } else {
-      // console.log(note);
       Soundfont.instrument(myAudioContext, 'acoustic_grand_piano').then(function (piano) {
         piano.play(note);
       });
     }
   };
-  // console.log(GenerateScale('D#', 'major'));
+  console.log(state);
+  // console.log(GenerateScale(state.key, state.scale));
   return (
     <div>
       <button onClick={start}>start</button>
       <button onClick={stop}>stop</button>
-      <h1>{pitchNote}</h1>
+      <h1>{`${state.key} ${state.scale} scale:`}</h1>
+      <h2>{state.notes.join(' ')}</h2>
       <Select />
       <Piano input={note} />
     </div>

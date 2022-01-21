@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { GenerateScale } from '../../redux/actions';
 import { KEY_CHANGED, SCALE_CHANGED } from '../../redux/constants';
 import { StyledSelect } from './Select.styled';
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
