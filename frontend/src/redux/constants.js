@@ -8,3 +8,4 @@ export const MINOR_NATURAL_SCALE = [0, 2, 3, 5, 7, 8, 10];
 
 export const INPUT_CHANGED = 'INPUT_CHANGED';
 export const WRONG_CHANGED = 'WRONG_CHANGED';
+export const OCTAVE_CHANGED = 'OCTAVE_CHANGED';

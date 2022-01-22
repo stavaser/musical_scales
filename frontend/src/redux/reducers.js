@@ -3,6 +3,7 @@ import {
   INPUT_CHANGED,
   KEY_CHANGED,
   NOTES_CHANGED,
+  OCTAVE_CHANGED,
   SCALE_CHANGED,
   WRONG_CHANGED,
 } from './constants';
@@ -13,6 +14,8 @@ const initialState = {
   notes: ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C'],
   correctId: -1,
   input: '',
+  octave: -1,
+  new_octave: false,
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -35,6 +38,12 @@ const mainReducer = (state = initialState, action) => {
       }
       index -= 1;
       return { ...state, correctId: index };
+    case OCTAVE_CHANGED:
+      if (state.octave != -1 && payload != state.octave) {
+        console.log(OCTAVE_CHANGED);
+        return { ...state, octave: payload, new_octave: true };
+      }
+      return { ...state, octave: payload, new_octave: false };
     default:
       return state;
   }

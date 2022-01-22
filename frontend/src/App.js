@@ -8,7 +8,8 @@ import autoCorrelate from './utils/AutoCorrelate';
 import { noteFromPitch, centsOffFromPitch, getDetunePercent } from './utils/Helpers';
 import GenerateScale from './utils/GenerateScale';
 import Select from './components/Select/Select';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { OCTAVE_CHANGED } from './redux/constants';
 const noteStrings = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 const audioCtx = AC.getAudioContext();
@@ -30,6 +31,10 @@ const App = () => {
   const [input, setInput] = useState([]);
   const [output, setOutput] = useState('');
   const [note, setNote] = useState('');
+  const [noteStack, setNoteStack] = useState([]);
+  const [prevOctave, setPrevOctave] = useState(-1);
+  const [octave, setOctave] = useState(-1);
+  const [noteId, setNoteId] = useState(-1);
   const [key, setKey] = useState('');
   const [scale, setScale] = useState('');
   const c_major = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
@@ -37,7 +42,7 @@ const App = () => {
   const [hint, setHint] = useState(false);
   const [wrongNote, setWrongNote] = useState('');
   var queue = state.notes.slice();
-  var prevNote = '';
+  const dispatch = useDispatch();
 
   const updatePitch = (time) => {
     analyserNode.getFloatTimeDomainData(buf);
@@ -68,14 +73,12 @@ const App = () => {
   const onEnabled = () => {
     WebMidi.inputs.forEach((input) => {
       input.addListener('noteon', (e) => {
-        // console.log(e);
-        setNote(e.note.name + (e.note.accidental || ''));
-        // let output = WebMidi.outputs[0];
-        // output.playNote(e.note);
-        // playNote(e.note.identifier, e.note.name + (e.note.accidental || ''));
+        setNote({ note: e.note.name + (e.note.accidental || ''), octave: e.note.octave });
+        dispatch({ type: OCTAVE_CHANGED, payload: e.note.octave });
       });
     });
   };
+  console.log(note, octave);
 
   const start = async () => {
     const input = await getMicInput();
