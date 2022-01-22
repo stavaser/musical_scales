@@ -127,9 +127,14 @@ const App = () => {
       <h1>{`${state.key} ${state.scale} scale:`}</h1>
       <h2>
         {state.notes.map((note, index) => {
-          return <span>{note}</span>;
+          return (
+            <span key={index} className={index < state.currentId && 'done'}>
+              {note}
+            </span>
+          );
         })}
       </h2>
+      <p>{state.currentId}</p>
       <Select />
       <Piano input={note} scale_notes={state.notes} />
     </div>

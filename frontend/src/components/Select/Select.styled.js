@@ -1,4 +1,10 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+const activeStyles = `
+    transform: translateY(5px);
+    background-color: #ebf2eb;
+    box-shadow: inset #dce0dc 0 -5px 0 0;
+`;
 
 export const StyledSelect = styled.div`
   display: flex;
@@ -28,11 +34,27 @@ export const StyledSelect = styled.div`
     box-shadow: inset #e6f1e6 0 -10px 0 0;
     margin-left: 2px;
     margin-top: 2px;
+    &.active {
+      transform: translateY(5px);
+      background-color: #ebf2eb;
+      box-shadow: inset #dce0dc 0 -5px 0 0;
+    }
+    /* ${({ active }) =>
+      active
+        ? css`
+            ${activeStyles}
+          `
+        : ''} */
   }
 
-  button:active {
+  /* .button.active {
     transform: translateY(5px);
     background-color: #ebf2eb;
     box-shadow: inset #dce0dc 0 -5px 0 0;
   }
+  button:focus {
+    transform: translateY(5px);
+    background-color: #ebf2eb;
+    box-shadow: inset #dce0dc 0 -5px 0 0;
+  } */
 `;

@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GenerateScale } from '../../redux/actions';
 import { KEY_CHANGED, SCALE_CHANGED } from '../../redux/constants';
 import { StyledSelect } from './Select.styled';
-const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const KEYS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const SCALES = ['Major', 'Minor (Natural)', 'Minor (Harmonic)', 'Minor (Melodic)'];
 
 const Select = () => {
-  const scale = useSelector((state) => state.scale);
-  const key = useSelector((state) => state.key);
+  const [activeScale, setActiveScale] = useState(false);
+  const [ActiveKey, setActiveKey] = useState(false);
+
   const dispatch = useDispatch();
 
   const changeKey = (key) => {
@@ -26,14 +28,32 @@ const Select = () => {
   return (
     <StyledSelect>
       <div className="scale">
-        <button onClick={() => changeScale('major')}>Major</button>
-        <button onClick={() => changeScale('minor')}>Minor</button>
+        {SCALES.map((scale) => {
+          return (
+            <button
+              onClick={() => {
+                changeScale(scale);
+                setActiveScale(scale);
+              }}
+              className={activeScale == scale ? 'active' : ''}
+            >
+              {scale}
+            </button>
+          );
+        })}
       </div>
       <div className="keys">
-        {NOTES.map((note) => {
+        {KEYS.map((key) => {
           return (
-            <button key={note} onClick={() => changeKey(note)}>
-              {note}
+            <button
+              key={key}
+              onClick={() => {
+                changeKey(key);
+                setActiveKey(key);
+              }}
+              className={ActiveKey == key ? 'active' : ''}
+            >
+              {key}
             </button>
           );
         })}

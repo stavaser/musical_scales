@@ -30,12 +30,12 @@ export const GenerateScale = (key, scale) => {
   var result = [];
   var index = NOTES.indexOf(key);
   var chromatic = rotate(index);
-  if (scale == 'major') {
+  if (scale == 'Major') {
     for (let i = 0; i < MAJOR_SCALE.length; i++) {
       result.push(chromatic[MAJOR_SCALE[i]]);
     }
     result.push(key);
-  } else if (scale == 'minor') {
+  } else if (scale == 'Minor (Natural)') {
     for (let i = 0; i < MAJOR_SCALE.length; i++) {
       result.push(chromatic[MINOR_NATURAL_SCALE[i]]);
     }
