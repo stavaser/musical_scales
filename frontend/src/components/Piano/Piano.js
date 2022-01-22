@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { INPUT_CHANGED, WRONG_CHANGED } from '../../redux/constants';
 import { StyledPiano, Key } from './Piano.styled';
 const notes = [
   {
@@ -65,13 +66,15 @@ const notes = [
   {
     id: 12,
     name: 'C',
+    octave: '2',
     color: 'white',
   },
 ];
-const Piano = ({ input }) => {
-  const [hint, setHint] = useState(false);
+const Piano = ({ input, scale_notes }) => {
   const state = useSelector((state) => state);
-
+  const [hint, setHint] = useState(false);
+  const [wrongNote, setWrongNote] = useState('');
+  const dispatch = useDispatch();
   const showHint = () => {
     setHint(true);
     setTimeout(() => {
@@ -91,18 +94,34 @@ const Piano = ({ input }) => {
     }, 1500);
   };
 
-  console.log(hint);
+  const checkNote = (input) => {
+    dispatch({ type: INPUT_CHANGED });
+    if (input != '' && input != scale_notes[state.correctId]) {
+      setWrongNote(input);
+      dispatch({ type: WRONG_CHANGED });
+    }
+  };
+
+  useEffect(() => {
+    if (wrongNote != '') {
+      setWrongNote('');
+    }
+    checkNote(input);
+  }, [input]);
+
+  console.log('wrong', wrongNote);
+  console.log('correctId', state.correctId);
   return (
     <StyledPiano>
       <div className="container">
         <a onClick={() => showHint()}>Show hint</a>
-
         <div>
           {notes.map((note) => {
             return (
               <Key
                 key={note.id}
-                isCorrect={hint && state.notes.includes(note.name)}
+                isWrong={note.name == wrongNote}
+                isCorrect={hint && scale_notes.includes(note.name)}
                 className={`${note.color} ${input == note.name ? 'active' : ''}`}
               >
                 <span>{note.name}</span>

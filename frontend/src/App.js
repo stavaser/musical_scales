@@ -34,6 +34,11 @@ const App = () => {
   const [scale, setScale] = useState('');
   const c_major = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
+  const [hint, setHint] = useState(false);
+  const [wrongNote, setWrongNote] = useState('');
+  var queue = state.notes.slice();
+  var prevNote = '';
+
   const updatePitch = (time) => {
     analyserNode.getFloatTimeDomainData(buf);
     var ac = autoCorrelate(buf, audioCtx.sampleRate);
@@ -63,11 +68,11 @@ const App = () => {
   const onEnabled = () => {
     WebMidi.inputs.forEach((input) => {
       input.addListener('noteon', (e) => {
-        console.log(e);
+        // console.log(e);
         setNote(e.note.name + (e.note.accidental || ''));
         // let output = WebMidi.outputs[0];
         // output.playNote(e.note);
-        playNote(e.note.identifier);
+        // playNote(e.note.identifier, e.note.name + (e.note.accidental || ''));
       });
     });
   };
@@ -99,11 +104,10 @@ const App = () => {
       },
     });
   };
-  setInterval(updatePitch, 1);
-  // console.log(pitchNote);
+  // setInterval(updatePitch, 1);
   var myAudioContext;
 
-  const playNote = (note) => {
+  const playNote = (note, note_name) => {
     if (!myAudioContext) {
       myAudioContext = new AudioContext();
     } else {
@@ -112,16 +116,19 @@ const App = () => {
       });
     }
   };
-  console.log(state);
-  // console.log(GenerateScale(state.key, state.scale));
+
   return (
     <div>
       <button onClick={start}>start</button>
       <button onClick={stop}>stop</button>
       <h1>{`${state.key} ${state.scale} scale:`}</h1>
-      <h2>{state.notes.join(' ')}</h2>
+      <h2>
+        {state.notes.map((note, index) => {
+          return <span>{note}</span>;
+        })}
+      </h2>
       <Select />
-      <Piano input={note} />
+      <Piano input={note} scale_notes={state.notes} />
     </div>
   );
 };
