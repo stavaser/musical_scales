@@ -135,7 +135,7 @@ const Piano = ({ input, index, scale_notes }) => {
             key={0}
             isWrong={'C' == wrongNote && !state.new_octave}
             isCorrect={hint && scale_notes.includes('C')}
-            className={`white ${input.note == 'C' ? 'active' : ''}`}
+            className={`white ${input.note == 'C' && !state.new_octave ? 'active' : ''}`}
           >
             <span>C</span>
           </Key>
