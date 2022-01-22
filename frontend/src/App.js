@@ -134,7 +134,7 @@ const App = () => {
           );
         })}
       </h2>
-      <p>{state.currentId}</p>
+      {/* <p>{state.currentId}</p> */}
       <Select />
       <Piano input={note} scale_notes={state.notes} />
     </div>

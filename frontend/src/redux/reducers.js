@@ -12,6 +12,7 @@ const initialState = {
   scale: 'major',
   key: 'C',
   notes: ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C'],
+  currentNote: '',
   correctId: -1,
   currentId: -1,
   input: '',
@@ -28,6 +29,7 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         currentId: 0,
         correctId: 0,
+        backwards: false,
         notes: GenerateScale(state.key, payload),
         scale: payload,
       };
@@ -36,6 +38,7 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         currentId: 0,
         correctId: 0,
+        backwards: false,
         notes: GenerateScale(payload, state.scale),
         key: payload,
       };
@@ -51,7 +54,7 @@ const mainReducer = (state = initialState, action) => {
         var index = (state.correctId + 1) % 8;
         var current = (state.correctId + 1) % 9;
       }
-      return { ...state, currentId: current, correctId: index };
+      return { ...state, currentId: current, correctId: index, currentNote: payload };
     case WRONG_CHANGED:
       var index = state.correctId;
       var current = state.currentId;
@@ -64,11 +67,14 @@ const mainReducer = (state = initialState, action) => {
       }
       return { ...state, currentId: current, correctId: index };
     case OCTAVE_CHANGED:
+      if (state.correctId == 7) {
+        return { ...state, backwards: true, new_octave: true };
+      }
+
       if (state.octave != -1 && payload != state.octave) {
         console.log(OCTAVE_CHANGED);
         return {
           ...state,
-          backwards: true,
           octave: payload,
           new_octave: true,
         };

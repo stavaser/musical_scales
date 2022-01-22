@@ -110,7 +110,7 @@ const Piano = ({ input, index, scale_notes }) => {
   };
 
   const checkNote = (input) => {
-    dispatch({ type: INPUT_CHANGED });
+    dispatch({ type: INPUT_CHANGED, payload: input });
     if (input != '' && input != scale_notes[state.correctId]) {
       setWrongNote(input);
       dispatch({ type: WRONG_CHANGED });
