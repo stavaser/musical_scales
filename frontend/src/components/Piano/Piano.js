@@ -125,7 +125,7 @@ const Piano = ({ input, index, scale_notes }) => {
     checkNote(input.note);
   }, [input]);
 
-  console.log('state.new_octave', state.new_octave);
+  console.log('correct id', state.correctId, state.backwards);
   return (
     <StyledPiano>
       <div className="container">

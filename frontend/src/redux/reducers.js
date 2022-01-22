@@ -17,6 +17,7 @@ const initialState = {
   input: '',
   octave: -1,
   new_octave: false,
+  backwards: false,
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -39,20 +40,38 @@ const mainReducer = (state = initialState, action) => {
         key: payload,
       };
     case INPUT_CHANGED:
-      var index = (state.correctId + 1) % 8;
-      var current = (state.correctId + 1) % 9;
+      if (state.backwards && state.correctId == 0) {
+        return { ...state, backwards: false, correctId: 1, currentId: 1 };
+      }
+      if (state.backwards) {
+        var current = (state.correctId + 1) % 9;
+        if (state.correctId == 0) current = 0;
+        var index = (state.correctId - 1) % 8;
+      } else {
+        var index = (state.correctId + 1) % 8;
+        var current = (state.correctId + 1) % 9;
+      }
       return { ...state, currentId: current, correctId: index };
     case WRONG_CHANGED:
       var index = state.correctId;
-      if (index < 0) {
-        index = 0;
+      var current = state.currentId;
+      if (state.backwards) {
+        index += 1;
+        current += 1;
+      } else {
+        index -= 1;
+        current -= 1;
       }
-      index -= 1;
-      return { ...state, currentId: state.currentId - 1, correctId: index };
+      return { ...state, currentId: current, correctId: index };
     case OCTAVE_CHANGED:
       if (state.octave != -1 && payload != state.octave) {
         console.log(OCTAVE_CHANGED);
-        return { ...state, octave: payload, new_octave: true };
+        return {
+          ...state,
+          backwards: true,
+          octave: payload,
+          new_octave: true,
+        };
       }
       return { ...state, octave: payload, new_octave: false };
     default:
